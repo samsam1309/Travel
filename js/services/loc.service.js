@@ -99,8 +99,13 @@ function getLocCountByRateMap() {
 }
 
 function setSortBy(sortBy = {}) {
-    gSortBy = sortBy
+    if (sortBy.createdAt !== undefined) {
+        gSortBy = sortBy;
+    } else {
+        gSortBy = sortBy;
+    }
 }
+
 
 function _createLocs() {
     const locs = utilService.loadFromStorage(DB_KEY)

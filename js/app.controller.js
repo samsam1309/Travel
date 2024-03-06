@@ -16,6 +16,7 @@ window.app = {
     onShareLoc,
     onSetSortBy,
     onSetFilterBy,
+    onModalSubmit
 }
 
 function onInit() {
@@ -95,25 +96,45 @@ function onSearchAddress(ev) {
 }
 
 function onAddLoc(geo) {
-    const locName = prompt('Loc name', geo.address || 'Just a place')
-    if (!locName) return
+    const modal = document.getElementById('locModal');
+    modal.style.display = 'block';
+
+
+    document.getElementById('locName').value = geo.address || 'Just a place';
+    document.getElementById('rate').value = 3;
+}
+
+
+function onModalSubmit(geo) {
+    const locName = document.getElementById('locName').value;
+    const rate = +document.getElementById('rate').value;
+
+
+    const modal = document.getElementById('locModal');
+    modal.style.display = 'none';
+
+    
+    if (!locName) return;
 
     const loc = {
         name: locName,
-        rate: +prompt(`Rate (1-5)`, '3'),
-        geo
-    }
+        rate: rate,
+        geo: geo  
+    };
+
     locService.save(loc)
         .then((savedLoc) => {
-            flashMsg(`Added Location (id: ${savedLoc.id})`)
-            utilService.updateQueryParams({ locId: savedLoc.id })
-            loadAndRenderLocs()
+            flashMsg(`Added Location (id: ${savedLoc.id})`);
+            utilService.updateQueryParams({ locId: savedLoc.id });
+            loadAndRenderLocs();
         })
         .catch(err => {
-            console.error('OOPs:', err)
-            flashMsg('Cannot add location')
-        })
+            console.error('OOPs:', err);
+            flashMsg('Cannot add location');
+        });
 }
+
+
 
 function loadAndRenderLocs() {
     locService.query()
@@ -226,22 +247,24 @@ function getLocIdFromQueryParams() {
 }
 
 function onSetSortBy() {
-    const prop = document.querySelector('.sort-by').value
-    const isDesc = document.querySelector('.sort-desc').checked
+    const prop = document.querySelector('.sort-by').value;
+    const isDesc = document.querySelector('.sort-desc').checked;
 
-    if (!prop) return
+    if (!prop) return;
 
-    const sortBy = {}
-    sortBy[prop] = (isDesc) ? -1 : 1
+    const sortBy = {};
 
-    // Shorter Syntax:
-    // const sortBy = {
-    //     [prop] : (isDesc)? -1 : 1
-    // }
+    if (prop === 'createdAt') {
+        sortBy[prop] = (isDesc) ? -1 : 1;
+    } else {
+        sortBy[prop] = (isDesc) ? -1 : 1;
+    }
 
-    locService.setSortBy(sortBy)
-    loadAndRenderLocs()
+    locService.setSortBy(sortBy);
+    loadAndRenderLocs();
 }
+
+
 
 function onSetFilterBy({ txt, minRate }) {
     const filterBy = locService.setFilterBy({ txt, minRate: +minRate })
