@@ -32,7 +32,8 @@ function onGetLocs() {
     locService.getLocs()
         .then(locs => {
             console.log('Locations:', locs)
-            displayLocations(locs);
+            // document.querySelector('.locs').innerText = JSON.stringify(locs, null, 2)
+            document.querySelector('.locations').innerHTML = renderLocations(locs)
         })
 }
 
@@ -51,5 +52,3 @@ function onPanTo() {
     console.log('Panning the Map')
     mapService.panTo(35.6895, 139.6917)
 }
-
-
