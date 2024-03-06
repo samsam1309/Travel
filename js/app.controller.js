@@ -32,7 +32,8 @@ function onGetLocs() {
     locService.getLocs()
         .then(locs => {
             console.log('Locations:', locs)
-            document.querySelector('.locs').innerText = JSON.stringify(locs, null, 2)
+            // document.querySelector('.locs').innerText = JSON.stringify(locs, null, 2)
+            document.querySelector('.locations').innerHTML = renderLocations(locs)
         })
 }
 
@@ -50,4 +51,15 @@ function onGetUserPos() {
 function onPanTo() {
     console.log('Panning the Map')
     mapService.panTo(35.6895, 139.6917)
+}
+
+function renderLocations(locs) {
+    return locs.map(loc => {
+        return `<article class="location">
+                  <h4>${loc.name}</h4>
+                  <span class="rate"></span>
+                  <span class="lat">${loc.lat}</span>
+                  <span class="lng">${loc.lng}</span>
+                </article>`
+    }).join('')
 }

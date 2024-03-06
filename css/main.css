@@ -5,6 +5,7 @@ body{
     ". search"
     "locations map"
     ;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 header{
@@ -19,6 +20,3 @@ header{
     grid-area: map;
 }
 
-.locations{
-    grid-area: locations;
-}

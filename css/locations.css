@@ -1,0 +1,10 @@
+.locations{
+    grid-area: locations;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.location{
+    display: grid;
+}
