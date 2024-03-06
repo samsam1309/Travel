@@ -226,22 +226,27 @@ function getLocIdFromQueryParams() {
 }
 
 function onSetSortBy() {
-    const prop = document.querySelector('.sort-by').value
-    const isDesc = document.querySelector('.sort-desc').checked
+    const prop = document.querySelector('.sort-by').value;
+    const isDesc = document.querySelector('.sort-desc').checked;
 
-    if (!prop) return
+    if (!prop) return;
 
-    const sortBy = {}
-    sortBy[prop] = (isDesc) ? -1 : 1
+    const sortBy = {};
 
-    // Shorter Syntax:
-    // const sortBy = {
-    //     [prop] : (isDesc)? -1 : 1
-    // }
+    if (prop === 'creationTime') {
+        sortBy['createdAt'] = (isDesc) ? -1 : 1;
+    } else {
+        sortBy[prop] = (isDesc) ? -1 : 1;
+    }
 
-    locService.setSortBy(sortBy)
-    loadAndRenderLocs()
+    locService.setSortBy(sortBy);
+    loadAndRenderLocs();
 }
+
+
+
+
+
 
 function onSetFilterBy({ txt, minRate }) {
     const filterBy = locService.setFilterBy({ txt, minRate: +minRate })
