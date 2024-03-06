@@ -1,0 +1,24 @@
+body{
+    display: grid;
+    grid-template-areas: 
+    "header header"
+    ". search"
+    "locations map"
+    ;
+}
+
+header{
+    grid-area: header;
+}
+
+.search{
+    grid-area: search;
+}
+
+#map{
+    grid-area: map;
+}
+
+.locations{
+    grid-area: locations;
+}
