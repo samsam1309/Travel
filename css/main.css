@@ -27,7 +27,7 @@ header {
     margin: 10px;
 }
 
-.btn-add-marker {
+.btn-add-marker,.btn-user-pos {
     background: none;
     border: none;
     font-size: 1.4em;

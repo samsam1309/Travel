@@ -6,6 +6,8 @@ window.onAddMarker = onAddMarker
 window.onPanTo = onPanTo
 window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
+window.onSearchAddress = onSearchAddress
+
 
 function onInit() {
     mapService.initMap()
@@ -51,4 +53,19 @@ function onGetUserPos() {
 function onPanTo() {
     console.log('Panning the Map')
     mapService.panTo(35.6895, 139.6917)
+}
+
+
+function onSearchAddress() {
+    const address = document.getElementById('search-address').value;
+
+    if (address) {
+        locService.geocodeAddress(address)
+            .then(location => {
+                mapService.panTo(location.lat, location.lng);
+            })
+            .catch(error => {
+                console.error('Error geocoding address:', error);
+            });
+    }
 }
