@@ -110,8 +110,8 @@ function getLocCountByLastUpdateMap() {
                 console.log('loc:', loc);
                 console.log("map", map)
                 if (loc.updatedAt === loc.createdAt) map.never++
-                else if (loc.updatedAt < 1000 * 60 * 60 * 24) map.today++
-                else if (loc.updatedAt > 1000 * 60 * 60 * 24) map.past++
+                else if (loc.updatedAt > Date.now()- 1000 * 60 * 60 * 24) map.today++
+                else if (loc.updatedAt <= Date.now()- 1000 * 60 * 60 * 24) map.past++
                 return map
             }, { today: 0, past: 0, never: 0 })
             locCountByLastUpdateMap.total = locs.length
