@@ -18,7 +18,8 @@ window.app = {
     onShareLoc,
     onSetSortBy,
     onSetFilterBy,
-    onModalSubmit
+    onModalSubmit,
+    showModal
 }
 
 function onInit() {
@@ -99,46 +100,104 @@ function onSearchAddress(ev) {
             flashMsg('Cannot lookup address')
         })
 }
-
 function onAddLoc(geo) {
-    const modal = document.getElementById('locModal');
-    modal.style.display = 'block';
+    showModal()
+        .then(userLocation => {
+            if (!userLocation) return; // Si l'utilisateur annule le modal
 
+            const locName = userLocation.name;
+            const locRate = userLocation.rate;
 
-    document.getElementById('locName').value = geo.address || 'Just a place';
-    document.getElementById('rate').value = 3;
-}
+            if (!locName) return;
 
+            const loc = {
+                name: locName,
+                rate: locRate,
+                geo
+            };
 
-function onModalSubmit(geo) {
-    const locName = document.getElementById('locName').value;
-    const rate = +document.getElementById('rate').value;
-
-
-    const modal = document.getElementById('locModal');
-    modal.style.display = 'none';
-
-    
-    if (!locName) return;
-
-    const loc = {
-        name: locName,
-        rate: rate,
-        geo: geo  
-    };
-
-    locService.save(loc)
-        .then((savedLoc) => {
-            flashMsg(`Added Location (id: ${savedLoc.id})`);
-            utilService.updateQueryParams({ locId: savedLoc.id });
-            loadAndRenderLocs();
+            locService.save(loc)
+                .then((savedLoc) => {
+                    flashMsg(`Added Location (id: ${savedLoc.id})`);
+                    utilService.updateQueryParams({ locId: savedLoc.id });
+                    loadAndRenderLocs();
+                })
+                .catch(err => {
+                    console.error('OOPs:', err);
+                    flashMsg('Cannot add location');
+                });
         })
-        .catch(err => {
-            console.error('OOPs:', err);
-            flashMsg('Cannot add location');
+        .catch(error => {
+            console.error('Modal error:', error);
         });
 }
 
+function showModal() {
+    const modal = document.querySelector("#locModal");
+    if (!modal) {
+        console.error('Modal not found');
+        return Promise.reject('Modal not found');
+    }
+
+    modal.style.display = "block";
+
+    const nameInput = document.getElementById('locName');
+    const rateInput = document.getElementById('rate');
+
+    return new Promise((resolve, reject) => {
+        const onSubmit = () => {
+            const name = nameInput.value;
+            const rate = +rateInput.value;
+
+            if (!name) {
+                reject("Name cannot be empty");
+            } else {
+                modal.style.display = "none";
+                resolve({ name, rate });
+            }
+        };
+
+        const onCancel = () => {
+            modal.style.display = "none";
+            reject("User canceled");
+        };
+
+        // Add event listeners only if the elements are found
+        const submitButton = modal.querySelector('button[type="submit"]');
+        const cancelButton = modal.querySelector('button[type="cancel"]');
+        
+        if (submitButton && cancelButton) {
+            submitButton.addEventListener('click', onSubmit);
+            cancelButton.addEventListener('click', onCancel);
+        } else {
+            console.error('Submit or cancel button not found');
+            reject('Submit or cancel button not found');
+        }
+    });
+}
+
+function onModalSubmit() {
+    const nameInput = document.getElementById('locName');
+    const rateInput = document.getElementById('rate');
+
+    const name = nameInput.value;
+    const rate = +rateInput.value;
+
+    // Validate the inputs if needed
+    if (!name) {
+        alert('Name cannot be empty');
+        return;
+    }
+
+    // Now you can use the 'name' and 'rate' variables to perform actions, e.g., save the location.
+    // For simplicity, let's log them to the console in this example.
+    console.log('Name:', name);
+    console.log('Rate:', rate);
+
+    // You can also resolve a promise with the gathered data if needed.
+    // For example, you can modify the return statement like this:
+    // resolve({ name, rate });
+}
 
 
 function loadAndRenderLocs() {
