@@ -272,6 +272,7 @@ function onSetSortBy() {
 
 
 
+
 function onSetFilterBy({ txt, minRate }) {
     const filterBy = locService.setFilterBy({ txt, minRate: +minRate })
     utilService.updateQueryParams(filterBy)
