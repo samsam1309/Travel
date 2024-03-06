@@ -10,13 +10,25 @@
 
 <body>
     <header>
-        <h1>TravelTip Starter</h1>
+        <h1 class="logo">TravelTip Starter</h1>
+        <div class="user-location">
+
+            <div class="title">Location: Dekel Beach</div>
+            <div class="adress">Dereh Mitsrayim 1, ELAT, 800,ISRAEL</div>
+            <div class="distance">Distance: 175.38KM</div>
+            <button class="copy">Copy location</button>
+            <button class="share">Share location</button>
+        </div>
+
     </header>
-    <div class="search"><input type="search" name="search-address" id="search-address"><button>🔎</button></div>
+    <div class="search"><input type="search" name="search-address" id="search-address">
+        <button>🔎</button>
+        <button onclick="onAddMarker()" class="btn-add-marker"><i class="fa-solid fa-location-dot"></i></button>
+
+    </div>
 
     <div id="map" style="width: 100%; height: 400px;"></div>
 
-    <button onclick="onAddMarker()" class="btn-add-marker">Add Marker Speific Location</button>
     <button onclick="onGetUserPos()" class="btn-user-pos">Get User Position</button>
     <button onclick="onGetLocs()" class="btn-get-locs">Get Locations</button>
     <button onclick="onPanTo()" class="btn-pan">Pan Map to Tokyo</button>
@@ -29,6 +41,7 @@
     </section>
 
     <script type="module" src="js/app.controller.js"></script>
+    <script src="https://kit.fontawesome.com/4a09df90af.js" crossorigin="anonymous"></script>
 </body>
 
 </html>
