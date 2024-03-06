@@ -118,7 +118,8 @@ function onAddLoc(geo) {
             flashMsg('Cannot add location');
         });
 
-            if (!locName) return;
+    if (!locName) return;
+}
 
 function showModal() {
     document.getElementById('locModal').style.display = 'block'
@@ -161,73 +162,6 @@ function onModalSubmit(decision) {
     //         console.error('OOPs:', err);
     //         flashMsg('Cannot add location');
     //     });
-}
-
-function showModal() {
-    const modal = document.querySelector("#locModal");
-    if (!modal) {
-        console.error('Modal not found');
-        return Promise.reject('Modal not found');
-    }
-
-    modal.style.display = "block";
-
-    const nameInput = document.getElementById('locName');
-    const rateInput = document.getElementById('rate');
-
-    return new Promise((resolve, reject) => {
-        const onSubmit = () => {
-            const name = nameInput.value;
-            const rate = +rateInput.value;
-
-            if (!name) {
-                reject("Name cannot be empty");
-            } else {
-                modal.style.display = "none";
-                resolve({ name, rate });
-            }
-        };
-
-        const onCancel = () => {
-            modal.style.display = "none";
-            reject("User canceled");
-        };
-
-        // Add event listeners only if the elements are found
-        const submitButton = modal.querySelector('button[type="submit"]');
-        const cancelButton = modal.querySelector('button[type="cancel"]');
-        
-        if (submitButton && cancelButton) {
-            submitButton.addEventListener('click', onSubmit);
-            cancelButton.addEventListener('click', onCancel);
-        } else {
-            console.error('Submit or cancel button not found');
-            reject('Submit or cancel button not found');
-        }
-    });
-}
-
-function onModalSubmit() {
-    const nameInput = document.getElementById('locName');
-    const rateInput = document.getElementById('rate');
-
-    const name = nameInput.value;
-    const rate = +rateInput.value;
-
-    // Validate the inputs if needed
-    if (!name) {
-        alert('Name cannot be empty');
-        return;
-    }
-
-    // Now you can use the 'name' and 'rate' variables to perform actions, e.g., save the location.
-    // For simplicity, let's log them to the console in this example.
-    console.log('Name:', name);
-    console.log('Rate:', rate);
-
-    // You can also resolve a promise with the gathered data if needed.
-    // For example, you can modify the return statement like this:
-    // resolve({ name, rate });
 }
 
 
