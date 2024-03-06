@@ -100,36 +100,67 @@ function onSearchAddress(ev) {
             flashMsg('Cannot lookup address')
         })
 }
-function onAddLoc(geo) {
-    showModal()
-        .then(userLocation => {
-            if (!userLocation) return; // Si l'utilisateur annule le modal
 
-            const locName = userLocation.name;
-            const locRate = userLocation.rate;
+var gKeepResolve
+
+function onAddLoc(geo) {
+
+    var prm = showModal()
+    prm.then(loc => locService.save({ name: loc.name, rate: loc.rate, geo }))
+        .then((savedLoc) => {
+            flashMsg(`Added Location (id: ${savedLoc.id})`);
+            utilService.updateQueryParams({ locId: savedLoc.id });
+            loadAndRenderLocs();
+        })
+        .then()
+        .catch(err => {
+            console.error('OOPs:', err);
+            flashMsg('Cannot add location');
+        });
 
             if (!locName) return;
 
-            const loc = {
-                name: locName,
-                rate: locRate,
-                geo
-            };
+function showModal() {
+    document.getElementById('locModal').style.display = 'block'
+    return new Promise(resolve => {
+        gKeepResolve = resolve
+    })
+}
 
-            locService.save(loc)
-                .then((savedLoc) => {
-                    flashMsg(`Added Location (id: ${savedLoc.id})`);
-                    utilService.updateQueryParams({ locId: savedLoc.id });
-                    loadAndRenderLocs();
-                })
-                .catch(err => {
-                    console.error('OOPs:', err);
-                    flashMsg('Cannot add location');
-                });
-        })
-        .catch(error => {
-            console.error('Modal error:', error);
-        });
+
+function onModalSubmit(decision) {
+    const locName = document.getElementById('locName').value;
+    const rate = +document.getElementById('rate').value;
+
+
+    const modal = document.getElementById('locModal');
+    modal.style.display = 'none';
+
+
+    if (!locName) return;
+
+    // const loc = {
+    //     name: locName,
+    //     rate: rate,
+    //     geo: geo
+    // };
+
+
+    gKeepResolve({
+        name: locName,
+        rate: rate,
+    })
+    // locService.save(loc)
+    //     .then((savedLoc) => {
+    //         flashMsg(`Added Location (id: ${savedLoc.id})`);
+    //         utilService.updateQueryParams({ locId: savedLoc.id });
+    //         loadAndRenderLocs();
+    //     })
+    //     .then()
+    //     .catch(err => {
+    //         console.error('OOPs:', err);
+    //         flashMsg('Cannot add location');
+    //     });
 }
 
 function showModal() {
