@@ -18,7 +18,8 @@ window.app = {
     onShareLoc,
     onSetSortBy,
     onSetFilterBy,
-    onModalSubmit
+    onModalSubmit,
+    showModal
 }
 
 function onInit() {
@@ -117,8 +118,7 @@ function onAddLoc(geo) {
             flashMsg('Cannot add location');
         });
 
-    document.getElementById('locName').value = geo.address || 'Just a place';
-    document.getElementById('rate').value = 3;
+    if (!locName) return;
 }
 
 function showModal() {
@@ -146,7 +146,6 @@ function onModalSubmit(decision) {
     })
  
 }
-
 
 
 function loadAndRenderLocs() {
