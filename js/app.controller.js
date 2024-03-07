@@ -140,28 +140,11 @@ function onModalSubmit(decision) {
 
     if (!locName) return;
 
-    // const loc = {
-    //     name: locName,
-    //     rate: rate,
-    //     geo: geo
-    // };
-
-
     gKeepResolve({
         name: locName,
         rate: rate,
     })
-    // locService.save(loc)
-    //     .then((savedLoc) => {
-    //         flashMsg(`Added Location (id: ${savedLoc.id})`);
-    //         utilService.updateQueryParams({ locId: savedLoc.id });
-    //         loadAndRenderLocs();
-    //     })
-    //     .then()
-    //     .catch(err => {
-    //         console.error('OOPs:', err);
-    //         flashMsg('Cannot add location');
-    //     });
+ 
 }
 
 

@@ -8,8 +8,8 @@ export const mapService = {
     addClickListener
 }
 
-// TODO: Enter your API Key
-const API_KEY = 'AIzaSyAmulamqxNYbdaWuJJiUZVsfaQXwYgsBTY'
+import { API_KEY } from './keys.js'
+
 var gMap
 var gMarker
 
